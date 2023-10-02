@@ -75,6 +75,6 @@ class Customer extends Authenticatable
      */
     public function shoppingCart(): BelongsToMany|Collection
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'shopping_cart');
     }
 }
