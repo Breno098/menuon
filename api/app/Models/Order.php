@@ -14,10 +14,11 @@ use Illuminate\Support\Collection;
  * @property int|null $id
  * @property string $status
  * @property string $payment_method
- * @property float $price
  * @property float $manual_discount
+ * @property-read float|null $price
  * @property BelongsTo|Customer $customer
  * @property HasOne|Address $deliveryAddress
+ * @property HasMany|Collection<OrderItem> $items
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -31,7 +32,6 @@ class Order extends Model
     protected $fillable = [
         'status',
         'payment_method',
-        'price',
         'manual_discount'
     ];
 
@@ -39,10 +39,22 @@ class Order extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'price' => 'float',
         'manual_discount' => 'float',
     ];
 
+    /**
+     * Attributes
+     */
+
+    /**
+     * @return float|null
+     */
+    public function getPriceAttribute(): float|null
+    {
+        return $this->items->sum(function(OrderItem $item)  {
+            return (float) $item->price * $item->quantity;
+        });
+    }
 
     /**
      * Relationships
@@ -71,4 +83,6 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+
 }

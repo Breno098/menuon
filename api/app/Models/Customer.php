@@ -17,6 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $password
  * @property string $cellphone
  * @property HasMany|Collection<Address> $addresses
+ * @property HasMany|Collection<Order> $orders
  * @property BelongsToMany|Collection<Coupon> $coupons
  * @property BelongsToMany|Collection<Product> $shoppingCart
  */
@@ -76,5 +77,13 @@ class Customer extends Authenticatable
     public function shoppingCart(): BelongsToMany|Collection
     {
         return $this->belongsToMany(Product::class, 'shopping_cart');
+    }
+
+    /**
+     * @return HasMany|Collection<Order>
+     */
+    public function orders(): HasMany|Collection
+    {
+        return $this->hasMany(Order::class);
     }
 }

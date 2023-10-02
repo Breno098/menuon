@@ -23,7 +23,6 @@ class Coupon extends Model
         'code',
         'type',
         'value',
-        'type',
         'quantity'
     ];
 
