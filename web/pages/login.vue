@@ -7,7 +7,7 @@
   import { useAuthStore } from '~/stores/useAuthStore';
 
   const form = ref({
-    email: 'test@example.com',
+    email: 'customer@customer.com',
     password: 'password'
   });
 
