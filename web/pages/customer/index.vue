@@ -1,14 +1,12 @@
 <script lang="ts" setup>
-
-definePageMeta({
-  middleware: ['auth']
-})
-
+  definePageMeta({
+    layout: 'customer-default'
+  })
 </script>
 
 <template>
   <div>
-    Page: Auth Only
+    Page: Index
   </div>
 </template>
 
