@@ -17,6 +17,14 @@ class CustomerSeeder extends Seeder
         Customer::factory()
             ->has(Address::factory()->count(2))
             ->hasAttached(Product::all()->random(2), [], 'shoppingCart')
+            ->create([
+                'name' => 'Customer',
+                'email' => 'customer@customer.com',
+            ]);
+
+        Customer::factory()
+            ->has(Address::factory()->count(2))
+            ->hasAttached(Product::all()->random(2), [], 'shoppingCart')
             ->count(20)
             ->create();
     }

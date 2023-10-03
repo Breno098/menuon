@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Customer\Auth\AuthenticatedSessionController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+
+
+/** Customer Routes */
+Route::post('/customer/login', [AuthenticatedSessionController::class, 'login'])
+    ->middleware('guest:customer')
+    ->name('api.customer.login');
+
+Route::post('/customer/logout', [AuthenticatedSessionController::class, 'logout'])
+    ->middleware('auth:customer')
+    ->name('api.customer.logout');
+
+Route::middleware(['auth:customer'])->group(function () {
+    Route::get('/customer/user', fn (Request $request) => $request->user());
 });
