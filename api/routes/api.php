@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Customer\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Customer\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,6 @@ Route::post('/customer/logout', [AuthenticatedSessionController::class, 'logout'
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('/customer/user', fn (Request $request) => $request->user());
 });
+
+Route::get('/customer/products', [ProductController::class, 'index']);
+
