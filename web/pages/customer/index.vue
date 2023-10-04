@@ -3,30 +3,36 @@
     layout: 'customer-default'
   })
 
-  const products = ref([]);
-  
-  async function getProducts() {
-    const { data } = await useApiCustomer('/products');
+  const { data } = await useApiCustomer('/food_sessions');
 
-    products.value = data.value.products;
+  function showSession(session) {
+    navigateTo(`/customer/session/${session.id}`)
   }
-  
 </script>
 
 <template>
   <div>
-    <div v-for="product in products" :key="product.id">
-      {{ product.name }}
+    <div class="row q-col-gutter-md">
+      <div
+        class="col-6"
+        v-for="session in data.food_sessions" 
+        :key="session.id"
+      >
+        <q-card 
+          flat
+          @click="showSession(session)"
+        >
+          <q-img 
+            :src="session.image"
+            height="200px"
+          >
+            <div class="absolute-bottom">
+              <div class="text-h6">{{ session.id }} - {{ session.title }}</div>
+            </div>
+          </q-img>
+        </q-card>
+      </div>
     </div>
-
-    <q-btn
-        color="blue"
-        label="getProducts"
-        @click="getProducts"
-        class="full-width"
-        no-caps
-    />
+ 
   </div>
 </template>
-
-<style scoped></style>
