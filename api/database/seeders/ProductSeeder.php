@@ -31,12 +31,24 @@ class ProductSeeder extends Seeder
             'price' => 5.49
         ]);
 
+        $chocolate = Product::factory()->create([
+            'name' => 'Chocolate',
+            'price' => 7.99
+        ]);
+
         $pizzaSession = FoodSession::create([
-            'title' => 'Pizzas',
+            'title' => 'Pizza',
+            'image' => \App\Helpers\Seeder\Random::image(),
         ]);
 
         $burguerSession = FoodSession::create([
             'title' => 'Hambúrguer',
+            'image' => \App\Helpers\Seeder\Random::image(),
+        ]);
+
+        $dessertSession = FoodSession::create([
+            'title' => 'Sobremesa',
+            'image' => \App\Helpers\Seeder\Random::image(),
         ]);
 
         Product::factory()
@@ -68,7 +80,7 @@ class ProductSeeder extends Seeder
                 'price' => $cheese->price,
             ], 'additional')
             ->hasAttached($burguerSession, [], 'sessions')
-            ->state(['name' => 'Burguer Hermine'])
+            ->state(['name' => 'Burguer hermione'])
             ->create();
 
         Product::factory()
@@ -101,6 +113,16 @@ class ProductSeeder extends Seeder
             ], 'additional')
             ->hasAttached($pizzaSession, [], 'sessions')
             ->state(['name' => 'Pizza Voldemort'])
+            ->create();
+
+        Product::factory()
+            ->has(ProductImage::factory()->count(2), 'images') 
+            ->hasAttached($chocolate, [
+                'additional_product_id' => $chocolate->id,
+                'price' => $chocolate->price,
+            ], 'additional')
+            ->hasAttached($dessertSession, [], 'sessions')
+            ->state(['name' => 'Sorvete Sirius'])
             ->create();
     }
 }
