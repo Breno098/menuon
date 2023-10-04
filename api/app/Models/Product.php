@@ -57,9 +57,14 @@ class Product extends Model
      */
     public function additional(): BelongsToMany|Collection
     {
-        return $this->belongsToMany(Product::class, 'additional_products')->withPivot([
-            'price as price',
-            'maximum_quantity as maximum_quantity'
+        return $this->belongsToMany(
+            Product::class, 
+            'additional_products',
+            'product_id',
+            'additional_product_id'
+        )->withPivot([
+            'price as additional_price',
+            'maximum_quantity as additional_maximum_quantity'
         ]);
     }
 
