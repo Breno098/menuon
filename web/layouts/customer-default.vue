@@ -1,13 +1,21 @@
 <script lang="ts" setup>
   import { useAuthStore } from '~/stores/useAuthStore';
+  import { useShopingCart } from '~/stores/useShopingCart';
 
   const auth = useAuthStore();
+  const shopingCart = useShopingCart();
 
   async function handleLogout() {
     await auth.logout();
   }
 
   const userName = computed(() => auth.user ? auth.user.name : null);
+
+  const countProductsInCard = computed(() => shopingCart.products.length)
+
+  function showShoppingCard() {
+    alert('TODO navigate to shopping cart')
+  }
 </script>
 
 <template>
@@ -32,5 +40,20 @@
         <slot />
       </q-page>
     </q-page-container>
+
+    <q-footer 
+      bordered 
+      class="transparent text-black q-px-lg q-py-md flex justify-end"
+    >
+        <q-btn 
+          round  
+          icon="shopping_cart"
+          @click="showShoppingCard"
+        >
+          <q-badge color="orange" floating>
+            {{ countProductsInCard }}
+          </q-badge>
+        </q-btn>
+    </q-footer>
    </q-layout>
 </template>

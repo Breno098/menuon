@@ -6,7 +6,7 @@
   const { data } = await useApiCustomer('/food_sessions');
 
   function showSession(session) {
-    navigateTo(`/customer/session/${session.id}`)
+    navigateTo(`/session/${session.id}`)
   }
 </script>
 
