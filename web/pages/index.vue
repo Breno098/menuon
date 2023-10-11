@@ -14,7 +14,7 @@
   <div>
     <div class="row q-col-gutter-md">
       <div
-        class="col-6"
+        class="col-6 cursor-pointer"
         v-for="session in data.food_sessions" 
         :key="session.id"
       >

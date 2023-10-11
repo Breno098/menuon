@@ -11,10 +11,14 @@
 
   const userName = computed(() => auth.user ? auth.user.name : null);
 
-  const countProductsInCard = computed(() => shopingCart.products.length)
+  const countProductsInCart = computed(() => shopingCart.products.length)
+
+  function goToIndexPage() {
+    navigateTo(`/`)
+  }
 
   function showShoppingCard() {
-    alert('TODO navigate to shopping cart')
+    navigateTo(`/my-cart`)
   }
 </script>
 
@@ -22,7 +26,10 @@
    <q-layout view="lhh lpR lFf">
     <q-header class="bg-green">
       <q-toolbar>
-        <q-toolbar-title class="text-black row items-center">
+        <q-toolbar-title 
+          @click="goToIndexPage"
+          class="text-black row items-center" 
+        >
           MenuOn
         </q-toolbar-title>
 
@@ -36,7 +43,7 @@
     </q-header>
 
     <q-page-container>
-      <q-page>
+      <q-page class="q-ma-xl">
         <slot />
       </q-page>
     </q-page-container>
@@ -51,7 +58,7 @@
           @click="showShoppingCard"
         >
           <q-badge color="orange" floating>
-            {{ countProductsInCard }}
+            {{ countProductsInCart }}
           </q-badge>
         </q-btn>
     </q-footer>
