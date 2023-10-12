@@ -7,8 +7,9 @@
         product: Object
     });
 
+    const mainProductCount = ref(1);
 
-    const mainProductCount = ref(0);
+    const notes = ref(null);
 
     const additional = ref(
         props.product.additional.map(add => {
@@ -35,6 +36,7 @@
             product: props.product,
             count: mainProductCount.value,
             additional: addParse,
+            notes: notes.value,
             totalPrice: totalPrice.value
         };
 
@@ -76,7 +78,7 @@
                     @click="decrementMainProduct"
                     icon="remove" 
                     outline 
-                    :disabled="mainProductCount === 0"
+                    :disabled="mainProductCount <= 1"
                 />
 
                 <q-btn :label="mainProductCount" outline/>
@@ -124,6 +126,15 @@
                     </q-item-section>
                 </q-item>
             </q-list>
+        </q-card-section>
+
+        <q-card-section>
+            <q-input
+                v-model="notes"
+                outlined
+                autogrow
+                label="Observações (tirar cebola ou salada por exemplo)"
+            />
         </q-card-section>
 
         <q-card-section>
