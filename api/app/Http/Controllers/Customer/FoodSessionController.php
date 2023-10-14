@@ -51,13 +51,6 @@ class FoodSessionController extends Controller
                                 'path' => $image->path,
                             ];
                         }),
-                        'additional' => $product->additional->map(function (Product $additional) {
-                            return [
-                                'id' => $additional->id,
-                                'name' => $additional->name,
-                                'price' => $additional->additional_price,
-                            ];
-                        })
                     ];
                 })
             ]

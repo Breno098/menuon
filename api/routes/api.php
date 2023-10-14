@@ -35,3 +35,5 @@ Route::middleware(['auth:customer'])->group(function () {
 
 Route::get('/customer/food_sessions', [FoodSessionController::class, 'index']);
 Route::get('/customer/food_sessions/{foodSession}', [FoodSessionController::class, 'show']);
+
+Route::get('/customer/product/{product}', [ProductController::class, 'show']);
