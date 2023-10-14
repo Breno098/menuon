@@ -24,7 +24,7 @@
 
 <template>
    <q-layout view="lhh lpR lFf">
-    <q-header class="bg-green">
+    <!-- <q-header class="bg-green">
       <q-toolbar>
         <q-toolbar-title 
           @click="goToIndexPage"
@@ -40,7 +40,7 @@
           <q-tooltip>Sair</q-tooltip>
         </q-btn>
       </q-toolbar>
-    </q-header>
+    </q-header> -->
 
     <q-page-container>
       <q-page>
@@ -48,7 +48,7 @@
       </q-page>
     </q-page-container>
 
-    <q-footer 
+    <!-- <q-footer 
       bordered 
       class="transparent text-black q-px-lg flex justify-end"
     >
@@ -61,6 +61,6 @@
             {{ countProductsInCart }}
           </q-badge>
         </q-btn>
-    </q-footer>
+    </q-footer> -->
    </q-layout>
 </template>

@@ -70,8 +70,11 @@
 
 <template>
     <div>
-        <q-card>
-            <q-img :src="wallpaper"/>
+        <q-card flat>
+            <q-img 
+                :src="wallpaper" 
+                height="300px"
+            />
 
             <q-card-section>
                 <div class="text-h6 text-weight-bolder q-mb-sm">
@@ -88,7 +91,7 @@
                 expand-separator
                 label="Adicionais"
             >
-                <q-card>
+                <q-card flat>
                     <q-card-section>
                         <q-list separator>
                             <q-item v-for="additionalOne in additional">
@@ -136,46 +139,51 @@
                     dense
                 />
             </q-card-section>
-
-            <q-card-section class="row justify-between items-center">
-                <div class="text-weight-bolder">
-                    R$ {{ totalPrice }}
-                </div>
-
-                <q-btn-group flat>
-                    <q-btn 
-                        @click="decrementMainProduct"
-                        icon="remove" 
-                        :disabled="mainProductCount <= 1"
-                        size="sm"
-                        flat
-                        padding="5px"
-                    />
-
-                    <q-btn :label="mainProductCount" flat size="sm"/>
-
-                    <q-btn 
-                        @click="incrementMainProduct"
-                        icon="add" 
-                        size="sm"
-                        flat 
-                        padding="5px"
-                    />
-                </q-btn-group>
-            </q-card-section>
-
-            <q-card-actions>
-                <q-btn 
-                    @click="addToShoppingCart"
-                    color="black"
-                    class="fit"
-                    no-caps
-                >
-                    <q-icon name="add_shopping_cart" size="sm" class="q-mr-sm"/>
-                    
-                    Adicionar ao carrinho
-                </q-btn>
-            </q-card-actions>
         </q-card>
+
+        <q-footer class="transparent text-black">
+            <q-card flat>
+                <q-card-section class="row justify-between items-center">
+                    <div class="text-weight-bolder">
+                        R$ {{ totalPrice }}
+                    </div>
+
+                    <q-btn-group flat>
+                        <q-btn 
+                            @click="decrementMainProduct"
+                            icon="remove" 
+                            :disabled="mainProductCount <= 1"
+                            size="sm"
+                            flat
+                            padding="5px"
+                        />
+
+                        <q-btn :label="mainProductCount" flat size="sm"/>
+
+                        <q-btn 
+                            @click="incrementMainProduct"
+                            icon="add" 
+                            size="sm"
+                            flat 
+                            padding="5px"
+                        />
+                    </q-btn-group>
+                </q-card-section>
+
+                <q-card-actions>
+                    <q-btn 
+                        @click="addToShoppingCart"
+                        color="black"
+                        class="fit"
+                        no-caps
+                    >
+                        <q-icon name="add_shopping_cart" size="sm" class="q-mr-sm"/>
+                        
+                        Adicionar ao carrinho
+                    </q-btn>
+                </q-card-actions>
+            </q-card>
+
+        </q-footer> 
     </div>
 </template>
