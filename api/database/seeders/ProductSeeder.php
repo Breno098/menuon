@@ -38,17 +38,22 @@ class ProductSeeder extends Seeder
 
         $pizzaSession = FoodSession::create([
             'title' => 'Pizza',
-            'image' => \App\Helpers\Seeder\Random::image(),
+            'image' => 'https://uploads.metropoles.com/wp-content/uploads/2023/08/09145143/Pizza-31.jpg',
         ]);
 
         $burguerSession = FoodSession::create([
             'title' => 'Hambúrguer',
-            'image' => \App\Helpers\Seeder\Random::image(),
+            'image' => 'https://images.unsplash.com/photo-1586816001966-79b736744398?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGFtYnVyZ3VlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80',
         ]);
 
         $dessertSession = FoodSession::create([
             'title' => 'Sobremesa',
-            'image' => \App\Helpers\Seeder\Random::image(),
+            'image' => 'https://images7.alphacoders.com/396/396289.jpg',
+        ]);
+
+        $drinksSession = FoodSession::create([
+            'title' => 'Bebidas',
+            'image' => 'https://img.freepik.com/fotos-gratis/bebidas-coloridas-em-um-bar-com-luzes-coloridas_1340-34312.jpg',
         ]);
 
         Product::factory()
@@ -80,7 +85,7 @@ class ProductSeeder extends Seeder
                 'price' => $cheese->price,
             ], 'additional')
             ->hasAttached($burguerSession, [], 'sessions')
-            ->state(['name' => 'Burguer hermione'])
+            ->state(['name' => 'Burguer Hermione'])
             ->create();
 
         Product::factory()
@@ -123,6 +128,18 @@ class ProductSeeder extends Seeder
             ], 'additional')
             ->hasAttached($dessertSession, [], 'sessions')
             ->state(['name' => 'Sorvete Sirius'])
+            ->create();
+
+        Product::factory()
+            ->has(ProductImage::factory()->count(1), 'images') 
+            ->hasAttached($drinksSession, [], 'sessions')
+            ->state(['name' => 'Suco Hogwarts'])
+            ->create();
+
+        Product::factory()
+            ->has(ProductImage::factory()->count(1), 'images') 
+            ->hasAttached($drinksSession, [], 'sessions')
+            ->state(['name' => 'Cerveja Snape'])
             ->create();
     }
 }
