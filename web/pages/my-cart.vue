@@ -1,8 +1,4 @@
 <script setup>
-  definePageMeta({
-    layout: 'customer-default'
-  })
-
   import { useShopingCart } from '~/stores/useShopingCart';
   import { useAuthStore } from '~/stores/useAuthStore';
 

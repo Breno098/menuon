@@ -1,8 +1,4 @@
 <script setup>
-  definePageMeta({
-    layout: 'customer-default'
-  })
-
   const { data } = await useApiCustomer('/food_sessions');
 
   function showSession(session) {
@@ -26,8 +22,8 @@
             :src="session.image"
             height="200px"
           >
-            <div class="absolute-bottom">
-              <div class="text-h6">{{ session.id }} - {{ session.title }}</div>
+            <div class="absolute-bottom text-center">
+              <div class="text-bold text-uppercase">{{ session.title }}</div>
             </div>
           </q-img>
         </q-card>
