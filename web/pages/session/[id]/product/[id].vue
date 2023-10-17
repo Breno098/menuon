@@ -42,11 +42,7 @@
 
         shopingCart.addProduct(parseToShoppingCart)
 
-        // mainProductCount.value = 0;
-        // additional.value.map(add => {
-        //     add.count = 0;
-        //     return add;
-        // });
+        navigateTo('/')
     }
 
     function decrementMainProduct() {

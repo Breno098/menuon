@@ -10,13 +10,15 @@
 
 <template>
     <div>
-        <q-card-section class="q-gutter-md">
-            <product-session 
-                v-for="product in data.food_session?.products" 
-                :key="product.id"
-                :product="product"
-                @click="show(product)"
-            />
-        </q-card-section>
+        <q-card flat>
+            <q-card-section class="q-gutter-md">
+                <product-session 
+                    v-for="product in data.food_session?.products" 
+                    :key="product.id"
+                    :product="product"
+                    @click="show(product)"
+                />
+            </q-card-section>
+        </q-card>
     </div>
 </template>

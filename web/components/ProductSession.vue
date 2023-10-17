@@ -7,7 +7,7 @@
 </script>
 
 <template>
-    <q-card>
+    <q-card flat>
         <q-img :src="wallpaper"/>
 
         <q-card-section>
