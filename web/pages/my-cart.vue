@@ -19,13 +19,45 @@
     state: null,
   });
 
-  const CEPisValidated = ref(false)
-1
-  const disableFields = computed(() => !CEPisValidated.value)
+  const CEPIsValidated = ref(false)
+  const CEPIsnotValidated = computed(() => !CEPIsValidated.value)
 
-  function checkCEP() {
-    
+  const addressIsNotCompleted = computed(() => CEPIsnotValidated.value || !address.value.number)
+
+  async function checkCEP() {
+    const cep = address.value.cep.replace(/\D/g, '');
+
+    if (cep.length < 8) {
+      CEPIsValidated.value = false;
+
+      address.value.street = null;
+      address.value.number = null;
+      address.value.district = null;
+      address.value.complement = null;
+      address.value.city = null;
+      address.value.state = null;
+
+      return;
+    }
+
+    const url = `https://viacep.com.br/ws/${cep}/json`;
+
+    const { data } = await useFetch(url)
+
+    if (! data.value) {
+      return;
+    }
+
+    CEPIsValidated.value = true;
+
+    address.value.street = data.value.logradouro;
+    address.value.district = data.value.bairro;
+    address.value.complement = data.value.complemento;
+    address.value.city = data.value.localidade;
+    address.value.state = data.value.uf;
   }
+
+  const paymentMethod = ref(null)
 
   function finishOrder() {
     // if (! auth.isLoggedIn) {
@@ -78,91 +110,102 @@
         icon="location_on"
         :done="step > 2"
       >
-        <div class="row q-col-gutter-md">
-          <div class="col-12 col-md-4">
-              <q-input
-                  outlined
-                  v-model="address.cep"
-                  label="CEP"
-                  dense
-                  mask="##.###-###"
-              >
-                <template v-slot:append>
-                  <q-spinner
-                    color="primary"
-                    size="xs"
-                  />
-                </template>
-              </q-input>
-          </div>
+        <q-card flat>
+          <q-card-section>
+            <div class="row q-col-gutter-md">
+              <div class="col-12 text-h6 text-weight-bolder">
+                Endereço de entrega
+              </div>
 
-          <div class="col-12 col-md-6">
-              <q-input
-                  outlined
-                  v-model="address.street"
-                  label="Rua"
-                  dense
-                  :disable="disableFields"
-              >
-              </q-input>
-          </div>
+              <div class="col-12 col-md-4">
+                  <q-input
+                      outlined
+                      v-model="address.cep"
+                      label="CEP"
+                      dense
+                      mask="##.###-###"
+                      @update:model-value="checkCEP"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        name="check"
+                        size="sm"
+                        color="green"
+                        v-if="CEPIsValidated"
+                      />
+                    </template>
+                  </q-input>
+              </div>
 
-          <div class="col-12 col-md-2">
-              <q-input
-                  outlined
-                  v-model="address.number"
-                  label="Número"
-                  dense
-                  :disable="disableFields"
-              >
-              </q-input>
-          </div>
+              <div class="col-12 col-md-6">
+                  <q-input
+                      outlined
+                      v-model="address.street"
+                      label="Rua"
+                      dense
+                      :disable="CEPIsnotValidated"
+                  >
+                  </q-input>
+              </div>
 
-          <div class="col-12 col-md-4">
-              <q-input
-                  outlined
-                  v-model="address.district"
-                  label="Bairro"
-                  dense
-                  :disable="disableFields"
-              >
-              </q-input>
-          </div>
+              <div class="col-12 col-md-2">
+                  <q-input
+                      outlined
+                      v-model="address.number"
+                      label="Número"
+                      dense
+                      :disable="CEPIsnotValidated"
+                  >
+                  </q-input>
+              </div>
 
-          <div class="col-12 col-md-4">
-              <q-input
-                  outlined
-                  v-model="address.city"
-                  label="Cidade"
-                  dense
-                  :disable="disableFields"
-              >
-              </q-input>
-          </div>
+              <div class="col-12 col-md-4">
+                  <q-input
+                      outlined
+                      v-model="address.district"
+                      label="Bairro"
+                      dense
+                      :disable="CEPIsnotValidated"
+                  >
+                  </q-input>
+              </div>
 
-          <div class="col-12 col-md-4">
-              <q-input
-                  outlined
-                  v-model="address.state"
-                  label="UF"
-                  maxlength="2"
-                  dense
-                  :disable="disableFields"
-              >
-              </q-input>
-          </div>
+              <div class="col-12 col-md-4">
+                  <q-input
+                      outlined
+                      v-model="address.city"
+                      label="Cidade"
+                      dense
+                      :disable="CEPIsnotValidated"
+                  >
+                  </q-input>
+              </div>
 
-          <div class="col-12 col-md-8">
-              <q-input
-                  outlined
-                  v-model="address.complement"
-                  label="Complemento"
-                  dense
-                  :disable="disableFields"
-              >
-              </q-input>
-          </div>
-        </div>
+              <div class="col-12 col-md-4">
+                  <q-input
+                      outlined
+                      v-model="address.state"
+                      label="UF"
+                      maxlength="2"
+                      dense
+                      :disable="CEPIsnotValidated"
+                  >
+                  </q-input>
+              </div>
+
+              <div class="col-12 col-md-8">
+                  <q-input
+                      outlined
+                      v-model="address.complement"
+                      label="Complemento"
+                      dense
+                      :disable="CEPIsnotValidated"
+                  >
+                  </q-input>
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
       </q-step>
 
       <q-step
@@ -170,7 +213,46 @@
         title="Pagamento"
         icon="credit_card"
       >
-        This step won't show up because it is disabled.
+        <q-card flat>
+            <q-card-section>
+              <div class="text-h6 text-weight-bolder">
+                  Forma de pagamento
+              </div>
+
+              <q-list>
+                <q-item tag="label" v-ripple>
+                  <q-item-section avatar>
+                    <q-radio 
+                      v-model="paymentMethod" 
+                      val="cash" 
+                      color="green" 
+                      checked-icon="task_alt"
+                    />
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label>Dinheiro</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item tag="label" v-ripple>
+                  <q-item-section avatar>
+                    <q-radio 
+                      v-model="paymentMethod" 
+                      val="credit_card" 
+                      color="green" 
+                      checked-icon="task_alt"
+                    />
+                  </q-item-section>
+                  
+                  <q-item-section>
+                    <q-item-label>Cartão de crédito/débito</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+
+            </q-card-section>
+        </q-card>
       </q-step>
     </q-stepper>
 
@@ -204,7 +286,7 @@
                 color="black"
                 class="col"
                 no-caps
-                :disable="disableFields"
+                :disable="addressIsNotCompleted"
             >
                 <q-icon name="location_on" size="xs" class="q-mr-xs"/>
                 
@@ -213,8 +295,5 @@
         </q-card-actions>
       </q-card>
     </q-footer> 
-
-    
- 
   </div>
 </template>
