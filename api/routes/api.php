@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Customer\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Customer\FoodSessionController;
+use App\Http\Controllers\Customer\OrderController;
 use App\Http\Controllers\Customer\ProductController;
 
 /*
@@ -31,9 +32,15 @@ Route::post('/customer/logout', [AuthenticatedSessionController::class, 'logout'
 
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('/customer/user', fn (Request $request) => $request->user());
+
+    Route::get('/customer/food_sessions', [FoodSessionController::class, 'index']);
+    Route::get('/customer/food_sessions/{foodSession}', [FoodSessionController::class, 'show']);
+
+    Route::get('/customer/product/{product}', [ProductController::class, 'show']);
+
+    Route::get('/customer/order/my', [OrderController::class, 'myOrders']);
+
+    Route::post('/customer/order/store', [OrderController::class, 'store']);
 });
 
-Route::get('/customer/food_sessions', [FoodSessionController::class, 'index']);
-Route::get('/customer/food_sessions/{foodSession}', [FoodSessionController::class, 'show']);
 
-Route::get('/customer/product/{product}', [ProductController::class, 'show']);
