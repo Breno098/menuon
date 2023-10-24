@@ -5,6 +5,8 @@
   const shopingCart = useShopingCart();
   const auth = useAuthStore();
 
+  const authUser = computed(() => auth.user ? auth.user : {});
+
   const products = computed(() => shopingCart.products)
 
   const step = ref(1);
@@ -20,8 +22,8 @@
   });
 
   const personData = ref({
-    name: null,
-    cellphone: null,
+    name: authUser.value.name,
+    cellphone: authUser.value.cellphone,
   });
 
   const paymentMethod = ref(null)
@@ -72,7 +74,7 @@
     return totalResult;
   })
 
-  function changeStatusCep(valid, data = {}) { 
+  function changeStatusCep(valid, data = {}) {
     CEPIsValidated.value = valid  && !data.erro;
 
     if (CEPIsValidated.value) {
@@ -109,18 +111,45 @@
     changeStatusCep(true, data.value);
   }
 
+  const resultData = computed(() => {
+    let result = {
+      items: [],
+      address: { ...address.value },
+      paymentMethod: paymentMethod.value
+    };
 
-  function finishOrder() {
-    // if (! auth.isLoggedIn) {
-    //   return alert('Modal de LOGIN');
-    // }
+    products.value.forEach(prod => {
+      let newProduct = {
+        id: prod.product.id,
+        quantity: prod.count,
+        additional: prod.additional.map(add => ({
+          id: add.id,
+          quantity: add.count,
+        }))
+      };
 
-    alert('Send to API');
+      result.items.push(newProduct);
+    });
+
+    return result;
+  });
+
+
+  async function finishOrder() {
+    const { data } = await useApiCustomer('/order/store', {
+      method: "POST",
+      body: resultData.value,
+    });
+
+    console.log(data.value);
   }
 </script>
 
 <template>
   <div>
+    <pre>
+      {{ resultData }}
+    </pre>
     <q-stepper
       v-model="step"
       ref="stepper"
@@ -128,6 +157,7 @@
       animated
       flat
       vertical
+      done-color="green"
     >
       <q-step
         :name="1"
@@ -135,8 +165,8 @@
         icon="receipt_long"
         :done="step > 1"
       >
-        <q-card 
-          v-for="product in products" 
+        <q-card
+          v-for="product in products"
           :key="product.id"
           flat
         >
@@ -211,7 +241,7 @@
                   >
                   </q-input>
               </div>
-           
+
               <div class="col-12 col-md-4">
                   <q-input
                       outlined
@@ -280,6 +310,7 @@
                         v-model="personData.name"
                         label="Como podemos te chamar?"
                         dense
+                        readonly
                     >
                     </q-input>
                 </div>
@@ -303,10 +334,10 @@
                   <q-list>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar>
-                        <q-radio 
-                          v-model="paymentMethod" 
-                          val="cash" 
-                          color="green" 
+                        <q-radio
+                          v-model="paymentMethod"
+                          val="cash"
+                          color="green"
                           checked-icon="task_alt"
                         />
                       </q-item-section>
@@ -318,14 +349,14 @@
 
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar>
-                        <q-radio 
-                          v-model="paymentMethod" 
-                          val="credit_card" 
-                          color="green" 
+                        <q-radio
+                          v-model="paymentMethod"
+                          val="credit_card"
+                          color="green"
                           checked-icon="task_alt"
                         />
                       </q-item-section>
-                      
+
                       <q-item-section>
                         <q-item-label>Cartão de crédito/débito</q-item-label>
                       </q-item-section>
@@ -345,7 +376,7 @@
       >
         <div class="row q-col-gutter-xs">
           <div class="col-12">
-            <q-card 
+            <q-card
               flat
               class="bg-grey-4"
             >
@@ -366,7 +397,7 @@
           </div>
 
           <div class="col-12">
-            <q-card 
+            <q-card
               flat
               class="bg-grey-4"
             >
@@ -395,7 +426,7 @@
           </div>
 
           <div class="col-6">
-            <q-card 
+            <q-card
               flat
               class="bg-grey-4 fit"
             >
@@ -416,7 +447,7 @@
           </div>
 
           <div class="col-6">
-            <q-card 
+            <q-card
               flat
               class="bg-grey-4 fit"
             >
@@ -433,7 +464,7 @@
           </div>
 
           <div class="col-12">
-            <q-card 
+            <q-card
               flat
               class="bg-grey-4"
             >
@@ -452,67 +483,67 @@
     <q-footer class="transparent text-black">
       <q-card flat>
         <q-card-actions class="row">
-            <q-btn 
-              v-if="step > 1" 
-              flat 
-              color="primary" 
-              @click="$refs.stepper.previous()" 
-              label="Voltar" 
-              class="col-3" 
+            <q-btn
+              v-if="step > 1"
+              flat
+              color="primary"
+              @click="$refs.stepper.previous()"
+              label="Voltar"
+              class="col-3"
             />
 
-            <q-btn 
+            <q-btn
                 v-if="step === 1"
-                @click="$refs.stepper.next()" 
+                @click="$refs.stepper.next()"
                 color="black"
                 class="col"
                 no-caps
             >
                 <q-icon name="check" size="xs" class="q-mr-xs"/>
-                
+
                 Ir para endereço de entrega
             </q-btn>
 
-            <q-btn 
+            <q-btn
                 v-if="step === 2"
-                @click="$refs.stepper.next()" 
+                @click="$refs.stepper.next()"
                 color="black"
                 class="col"
                 no-caps
                 :disable="addressIsNotCompleted"
             >
                 <q-icon name="check" size="xs" class="q-mr-xs"/>
-                
+
                 {{ textButtonAdrees }}
             </q-btn>
 
-            <q-btn 
+            <q-btn
                 v-if="step === 3"
-                @click="$refs.stepper.next()" 
+                @click="$refs.stepper.next()"
                 color="black"
                 class="col"
                 no-caps
                 :disable="cannotFinish"
             >
                 <q-icon name="check" size="xs" class="q-mr-xs"/>
-               
+
                 {{ textButtonPaymentMethodAndContact }}
             </q-btn>
 
-            <q-btn 
+            <q-btn
                 v-if="step === 4"
-                @click="finishOrder" 
+                @click="finishOrder"
                 color="black"
                 class="col"
                 no-caps
                 :disable="cannotFinish"
             >
                 <q-icon name="check" size="xs" class="q-mr-xs"/>
-                
+
                 Finalizar
             </q-btn>
         </q-card-actions>
       </q-card>
-    </q-footer> 
+    </q-footer>
   </div>
 </template>

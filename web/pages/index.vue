@@ -1,4 +1,8 @@
 <script setup>
+  definePageMeta({
+    middleware: ['auth'],
+  })
+
   import { useShopingCart } from '~/stores/useShopingCart';
 
   const shopingCart = useShopingCart();

@@ -8,7 +8,10 @@
 
 <template>
     <q-card flat>
-        <q-img :src="wallpaper"/>
+        <q-img 
+            :src="wallpaper" 
+            height="300px"
+        />
 
         <q-card-section>
             <div class="text-h6 text-weight-bolder q-mb-sm">

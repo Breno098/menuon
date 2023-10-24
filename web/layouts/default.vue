@@ -16,7 +16,7 @@
 
 <template>
    <q-layout view="lhh lpR lFf">
-    <!-- <q-header class="bg-green">
+    <q-header class="bg-green">
       <q-toolbar>
         <q-toolbar-title 
           @click="goToIndexPage"
@@ -32,7 +32,7 @@
           <q-tooltip>Sair</q-tooltip>
         </q-btn>
       </q-toolbar>
-    </q-header> -->
+    </q-header>
 
     <q-page-container>
       <q-page>
