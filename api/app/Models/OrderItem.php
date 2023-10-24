@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int|null $id
@@ -14,12 +16,13 @@ use Illuminate\Support\Carbon;
  * @property float $price
  * @property string|null $info
  * @property string|null $customer_notes
- * @property int|null $product_reference_id
+ * @property int|null $product_id
  * @property int $order_id
  * @property BelongsTo|Order $order
- * @property HasOne|Product $product_reference
+ * @property HasOne|Product $product
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property BelongsToMany|Collection<Product> $additional
  */
 class OrderItem extends Model
 {
@@ -36,7 +39,7 @@ class OrderItem extends Model
         'info',
         'customer_notes',
         'order_id',
-        'product_reference_id',
+        'product_id',
     ];
 
     protected $casts = [
@@ -51,9 +54,9 @@ class OrderItem extends Model
     /**
      * @return HasOne|Product
      */
-    public function productReference(): HasOne|Product
+    public function product(): HasOne|Product
     {
-        return $this->hasOne(Product::class, 'id', 'product_reference_id');
+        return $this->hasOne(Product::class, 'id');
     }
 
     /**
@@ -62,5 +65,20 @@ class OrderItem extends Model
     public function order(): BelongsTo|Order
     {
         return $this->belongsTo(Order::class);
+    }
+
+    /**
+     * @return BelongsToMany|Collection<Product>
+     */
+    public function additional(): BelongsToMany|Collection
+    {
+        return $this->belongsToMany(
+            Product::class, 
+            'additional_order_items',
+            'order_item_id',
+            'additional_product_id'
+        )->withPivot([
+            'price as additional_price',
+        ]);
     }
 }

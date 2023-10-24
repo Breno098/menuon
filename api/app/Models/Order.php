@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
  * @property float $manual_discount
  * @property-read float|null $price
  * @property BelongsTo|Customer $customer
- * @property HasOne|Address $deliveryAddress
+ * @property BelongsTo|Address $deliveryAddress
  * @property HasMany|Collection<OrderItem> $items
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -69,11 +69,11 @@ class Order extends Model
     }
 
     /**
-     * @return HasOne|Address
+     * @return BelongsTo|Address
      */
-    public function deliveryAddress(): HasOne|Address
+    public function deliveryAddress(): BelongsTo|Address
     {
-        return $this->hasOne(Address::class, 'delivery_address_id');
+        return $this->belongsTo(Address::class, 'delivery_address_id');
     }
 
     /**
