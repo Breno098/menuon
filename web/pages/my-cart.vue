@@ -140,16 +140,11 @@
       method: "POST",
       body: resultData.value,
     });
-
-    console.log(data.value);
   }
 </script>
 
 <template>
   <div>
-    <pre>
-      {{ resultData }}
-    </pre>
     <q-stepper
       v-model="step"
       ref="stepper"

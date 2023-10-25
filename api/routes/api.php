@@ -38,7 +38,7 @@ Route::middleware(['auth:customer'])->group(function () {
 
     Route::get('/customer/product/{product}', [ProductController::class, 'show']);
 
-    Route::get('/customer/order/my', [OrderController::class, 'myOrders']);
+    Route::get('/customer/order/my', [OrderController::class, 'my']);
 
     Route::post('/customer/order/store', [OrderController::class, 'store']);
 });

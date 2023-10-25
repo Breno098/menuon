@@ -18,6 +18,11 @@
   function showShoppingCard() {
     navigateTo(`/my-cart`)
   }
+
+  function showOrders() {
+    navigateTo(`/my-orders`)
+  }
+  
 </script>
 
 <template>
@@ -61,6 +66,18 @@
                 <q-icon name="shopping_cart" size="sm" class="q-mr-sm"/>
                 
                 Concluir pedido
+            </q-btn>
+        </q-card-actions>
+
+        <q-card-actions>
+            <q-btn 
+                color="black"
+                no-caps
+                @click="showOrders"
+            >
+                <q-icon name="file_copy" size="sm" class="q-mr-sm"/>
+                
+                Meus pedidos
             </q-btn>
         </q-card-actions>
       </q-card>
