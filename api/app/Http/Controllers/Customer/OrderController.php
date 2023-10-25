@@ -36,8 +36,7 @@ class OrderController extends Controller
         /** @var Customer */
         $customer = $request->user('customer');
 
-        dd('here');
-
+        
         $address = $customer->addresses()->updateOrCreate([
             'cep' => $request->get('address.cep'),
             'street' => $request->get('address.street'),
@@ -59,13 +58,11 @@ class OrderController extends Controller
         ]);
 
         /** @var Order */
-        $order = Order::create([
+        $order = $customer->orders()->create([
             'status' => 'pending_approval',
             'payment_method' => $request->get('paymentMethod'),
         ]);
 
-        $order->customer()->associate($customer);
-        
         $order->deliveryAddress()->associate($address);
 
         $order->save();
