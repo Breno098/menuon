@@ -18,6 +18,7 @@ use Illuminate\Support\Collection;
  * @property string|null $customer_notes
  * @property int|null $product_id
  * @property int $order_id
+ * @property-read float|null $total_price
  * @property BelongsTo|Order $order
  * @property HasOne|Product $product
  * @property Carbon $created_at
@@ -46,17 +47,34 @@ class OrderItem extends Model
         'price' => 'float',
     ];
 
+    /**
+     * Attributes
+     */
+
+    /**
+     * @return float|null
+     */
+    public function getTotalPriceAttribute(): float|null
+    {
+        $total = $this->price;
+
+        foreach ($this->additional as $add) {
+            $total += $add->additional_price * $add->additional_quantity;
+        }
+
+        return (float) $total * $this->quantity;
+    }
 
     /**
      * Relationships
      */
 
     /**
-     * @return HasOne|Product
+     * @return BelongsTo|Product
      */
-    public function product(): HasOne|Product
+    public function product(): BelongsTo|Product
     {
-        return $this->hasOne(Product::class, 'id');
+        return $this->belongsTo(Product::class);
     }
 
     /**
@@ -78,7 +96,8 @@ class OrderItem extends Model
             'order_item_id',
             'additional_product_id'
         )->withPivot([
-            'price as additional_price',
+            'additional_order_items.price as additional_price',
+            'additional_order_items.quantity as additional_quantity'
         ]);
     }
 }

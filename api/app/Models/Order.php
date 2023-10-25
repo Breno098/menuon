@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -15,7 +14,7 @@ use Illuminate\Support\Collection;
  * @property string $status
  * @property string $payment_method
  * @property float $manual_discount
- * @property-read float|null $price
+ * @property-read float|null $total_price
  * @property BelongsTo|Customer $customer
  * @property BelongsTo|Address $deliveryAddress
  * @property HasMany|Collection<OrderItem> $items
@@ -49,11 +48,9 @@ class Order extends Model
     /**
      * @return float|null
      */
-    public function getPriceAttribute(): float|null
+    public function getTotalPriceAttribute(): float|null
     {
-        return $this->items->sum(function(OrderItem $item)  {
-            return (float) $item->price * $item->quantity;
-        });
+        return $this->items->sum(fn(OrderItem $item) => (float) $item->total_price);
     }
 
     /**
