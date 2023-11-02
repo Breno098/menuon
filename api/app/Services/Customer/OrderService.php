@@ -24,7 +24,7 @@ class OrderService
      */
     public function myOrders(Customer $customer): Collection
     {
-        return $customer->orders;
+        return $customer->orders()->orderBy('created_at', 'desc')->get();
     }
 
     /**
