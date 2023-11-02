@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('delivery_address_id')->nullable()->constrained('addresses');
-            $table->enum('status', ['pending_approval', 'canceled', 'preparing', 'reversed', 'concluded'])->nullable();
+            $table->enum('status', ['pending_approval', 'canceled', 'preparing', 'reversed', 'concluded', 'delivery'])->nullable();
             $table->enum('payment_method', ['credit_card', 'cash'])->nullable();
             $table->decimal('manual_discount')->default(0);
             $table->timestamps();
