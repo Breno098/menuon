@@ -9,11 +9,18 @@
     >
         <q-card-section>
           <div class="row q-col-gutter-xs"  >
+           
             <div class="col-12">
               <q-card
                 flat
                 class="bg-grey-4"
               >
+                <q-card-section>
+                    <div class="text-weight-bolder">
+                      {{ order.status }}
+                    </div>
+                </q-card-section>
+
                 <q-card-section v-for="item in order.items" >
                     <div class="text-h6 text-weight-bolder">
                         {{ item.quantity }} un. {{ item.product.name }} ({{ item.price }} cada unidade)
